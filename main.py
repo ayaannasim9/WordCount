@@ -1,10 +1,22 @@
 import sys
-files=sys.argv[1:]
+argument=sys.argv[1:]
+files=[]
+flags=[]
 # print(files)
-
+# flags={
+#     'l':"line_count",
+#     'w':"word_count",
+#     'c':"character_count",
+#     'm':"byte_count"
+# }
 def handle_input():
-    if not files:
+    if not argument:
         return False
+    for arg in argument:
+        if arg.startswith("-"):
+            flags.append(arg[1:])
+        else:
+            files.append(arg)
     return True
 def word_count():
     result=[]
@@ -21,7 +33,6 @@ def word_count():
                     characters+=len(line)
                 result.append([f"{lines} {words} {characters} {file}"])
         except FileNotFoundError as not_found:
-            # print(not_found.filename)
             result.append([not_found.filename])
     return result
 def print_result():
@@ -34,4 +45,7 @@ def print_result():
 if __name__=="__main__":
     if not handle_input():
         print("You have not entered any file")
+        quit()
+    print(flags)
+    print(files)
     print_result()
