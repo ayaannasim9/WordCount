@@ -1,14 +1,10 @@
 import sys
 import os
+from config import Config
+config=Config()
 argument=sys.argv[1:]
 files=[]
 flags=[]
-config={
-    "line_count":False,
-    "word_count":False,
-    "byte_count":False,
-    "character_count":False,
-}
 
 def handle_input():
     if not argument:
@@ -25,24 +21,22 @@ def handle_input():
     return True
 
 def handle_flags():
-    # global line_count,word_count,byte_count,character_count
     if not flags:
-        config["line_count"]=True
-        config["word_count"]=True
-        config["byte_count"]=True
+        config.line_count=True
+        config.word_count=True
+        config.byte_count=True
         return
     for flag in flags:      
         for c in flag.lower():
             if c=="l":
-                config["line_count"]=True
+                config.line_count=True
             elif c=="w":
-                config["word_count"]=True
+                config.word_count=True
             elif c=="c":
-                config["byte_count"]=True
+                config.byte_count=True
             elif c=="m":
-                config["character_count"]=True
-            else:
-                continue    
+                config.character_count=True
+            
 
 def word_count_imp():
     result=[]
@@ -51,16 +45,16 @@ def word_count_imp():
             with open(file,"r") as f:
                 all_lines=f.readlines()
                 result_string=[]
-                if config["line_count"]:
+                if config.line_count:
                     lines=line_counter(all_lines)
                     result_string.append(str(lines))
-                if config["word_count"]:
+                if config.word_count:
                     words=word_counter(all_lines)
                     result_string.append(str(words))
-                if config["character_count"]:
+                if config.character_count:
                     characters=character_counter(all_lines)
                     result_string.append(str(characters))
-                if config["byte_count"]:
+                if config.byte_count:
                     byte_count_val=byte_counter(f)
                     result_string.append(str(byte_count_val))
                 result_string.append(file)
