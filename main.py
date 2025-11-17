@@ -41,27 +41,31 @@ def handle_flags():
 def word_count_imp():
     result=[]
     for file in files:
-        try:
-            with open(file,"r") as f:
-                all_lines=f.readlines()
-                result_string=[]
-                if config.line_count:
-                    lines=line_counter(all_lines)
-                    result_string.append(str(lines))
-                if config.word_count:
-                    words=word_counter(all_lines)
-                    result_string.append(str(words))
-                if config.character_count:
-                    characters=character_counter(all_lines)
-                    result_string.append(str(characters))
-                if config.byte_count:
-                    byte_count_val=byte_counter(f)
-                    result_string.append(str(byte_count_val))
-                result_string.append(file)
-                result.append([" ".join(result_string)])
-        except FileNotFoundError as not_found:
-            result.append([not_found.filename])
+        result.append([process_file(file)])
     return result
+
+def process_file(file):
+    try:
+        with open(file,"r") as f:
+            all_lines=f.readlines()
+            result_string=[]
+            if config.line_count:
+                lines=line_counter(all_lines)
+                result_string.append(str(lines))
+            if config.word_count:
+                words=word_counter(all_lines)
+                result_string.append(str(words))
+            if config.character_count:
+                characters=character_counter(all_lines)
+                result_string.append(str(characters))
+            if config.byte_count:
+                byte_count_val=byte_counter(f)
+                result_string.append(str(byte_count_val))
+            result_string.append(file)
+            return " ".join(result_string)
+    except FileNotFoundError as not_found:
+        return not_found.filename
+  
 
 def line_counter(all_lines):
     # will be implemented if line_count is set to True
