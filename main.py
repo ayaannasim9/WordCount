@@ -1,6 +1,7 @@
 import sys
 import os
 from config import Config
+
 config=Config()
 argument=sys.argv[1:]
 files=[]
@@ -41,7 +42,7 @@ def handle_flags():
 def word_count_imp():
     result=[]
     for file in files:
-        result.append([process_file(file)])
+        result.append(process_file(file))
     return result
 
 def process_file(file):
@@ -62,9 +63,9 @@ def process_file(file):
                 byte_count_val=byte_counter(f)
                 result_string.append(str(byte_count_val))
             result_string.append(file)
-            return " ".join(result_string)
+            return [" ".join(result_string), True]
     except FileNotFoundError as not_found:
-        return not_found.filename
+        return [not_found.filename,False]
   
 
 def line_counter(all_lines):
@@ -90,10 +91,11 @@ def byte_counter(file):
     return os.path.getsize(file.name)
 
 def print_result():
+    # will need to change the condition for the file not found into something more logical, and indepeneded of the length
     result=word_count_imp()
     for res in result:
-        if len(res[0].split())==1:
-            print(f"{res[0]} was not found")
+        if not res[1]:
+            print(res[0]+" was not found")
         else:
             print(res[0])
 if __name__=="__main__":
