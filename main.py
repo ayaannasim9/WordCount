@@ -10,15 +10,16 @@ flags=[]
 def handle_input():
     if not argument:
         return False
-    flags_empty=True
+    seen_file=False
     for arg in argument:
         if arg.startswith("-"):
+            if seen_file:
+                return False
             flags.append(arg[1:])
-            flags_empty=False
         else:
             files.append(arg)
-            if flags_empty:
-                return False
+            seen_file=True
+            
     return True
 
 def handle_flags():
@@ -104,3 +105,6 @@ if __name__=="__main__":
         quit()
     handle_flags()
     print_result()
+
+# add a total feature, that adds all the data from the files given
+# add a -L flag, for the longest line feature
